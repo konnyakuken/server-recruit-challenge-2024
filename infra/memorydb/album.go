@@ -10,6 +10,7 @@ import (
 )
 
 type albumRepository struct {
+	//排他制御をするために使用している(RLockなど)
 	sync.RWMutex
 	albumMap map[model.AlbumID]*model.Album // キーが AlbumID、値が model.Album のマップ
 }
@@ -50,14 +51,14 @@ func (r *albumRepository) Get(ctx context.Context, id model.AlbumID) (*model.Alb
 	return album, nil
 }
 
-/*
-func (r *albumRepository) Add(ctx context.Context, album **model.Album) error {
+func (r *albumRepository) Add(ctx context.Context, album *model.Album) error {
 	r.Lock()
 	r.albumMap[album.ID] = album
 	r.Unlock()
 	return nil
 }
 
+/*
 func (r *albumRepository) Delete(ctx context.Context, id *model.AlbumID) error {
 	r.Lock()
 	delete(r.albumMap, id)

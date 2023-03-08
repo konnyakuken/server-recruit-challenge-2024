@@ -50,18 +50,6 @@ func (c *singerController) GetSingerDetailHandler(w http.ResponseWriter, r *http
 	json.NewEncoder(w).Encode(singer)
 }
 
-/*
-func (c *singerController) GetAlbumsHandler(w http.ResponseController, r *http.Request) {
-	singers, err := c.service.GetAlbumListService(r.Context())
-	if err != nil {
-		errorHandler(w, r, 500, err.Error())
-		return
-	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(200)
-	json.NewEncoder(w).Encode(singers)
-}*/
-
 // POST /singers のハンドラー
 func (c *singerController) PostSingerHandler(w http.ResponseWriter, r *http.Request) {
 	var singer *model.Singer

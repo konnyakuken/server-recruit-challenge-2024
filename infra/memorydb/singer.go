@@ -16,6 +16,7 @@ type singerRepository struct {
 
 var _ repository.SingerRepository = (*singerRepository)(nil)
 
+// 歌手一覧を作成＆そのデータを参照渡し
 func NewSingerRepository() *singerRepository {
 	var initMap = map[model.SingerID]*model.Singer{
 		1: {ID: 1, Name: "Alice"},
