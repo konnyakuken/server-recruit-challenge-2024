@@ -6,7 +6,6 @@ import (
 	"sync"
 
 	"github.com/pulse227/server-recruit-challenge-sample/model"
-	//"github.com/pulse227/server-recruit-challenge-sample/repository"
 )
 
 type albumRepository struct {
@@ -58,10 +57,9 @@ func (r *albumRepository) Add(ctx context.Context, album *model.Album) error {
 	return nil
 }
 
-/*
-func (r *albumRepository) Delete(ctx context.Context, id *model.AlbumID) error {
+func (r *albumRepository) Delete(ctx context.Context, id model.AlbumID) error {
 	r.Lock()
 	delete(r.albumMap, id)
 	r.Unlock()
 	return nil
-}*/
+}

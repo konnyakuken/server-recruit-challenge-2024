@@ -11,7 +11,7 @@ type AlbumService interface {
 	GetAlbumListService(ctx context.Context) ([]*model.Album, error)
 	GetAlbumService(ctx context.Context, albumID model.AlbumID) (*model.Album, error)
 	PostAlbumService(ctx context.Context, album *model.Album) error
-	//DeleteAlbumService(ctx context.Context, albumID model.AlbumID) error
+	DeleteAlbumService(ctx context.Context, albumID model.AlbumID) error
 }
 
 type albumService struct {
@@ -48,10 +48,9 @@ func (s *albumService) PostAlbumService(ctx context.Context, album *model.Album)
 	return nil
 }
 
-/*
-func (s *albumService) DeleteAlbumService(ctx context.Context, singerID model.SingerID) error {
+func (s *albumService) DeleteAlbumService(ctx context.Context, albumID model.AlbumID) error {
 	if err := s.albumRepository.Delete(ctx, albumID); err != nil {
 		return err
 	}
 	return nil
-}*/
+}
