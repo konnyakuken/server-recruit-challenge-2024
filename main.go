@@ -12,6 +12,7 @@ import (
 )
 
 func main() {
+	//context.Background()で空のコンテキストを生成
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
 

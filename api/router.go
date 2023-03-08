@@ -15,12 +15,19 @@ func NewRouter() *mux.Router {
 	singerService := service.NewSingerService(singerRepo)
 	singerController := controller.NewSingerController(singerService)
 
+	albumsRepo := memorydb.NewAlbumRepository()
+	albumsServiice := service.NewAlbumService(albumsRepo)
+	albumController := controller.NewAlbumController(albumsServiice)
+
 	r := mux.NewRouter()
 
 	r.HandleFunc("/singers", singerController.GetSingerListHandler).Methods(http.MethodGet)
 	r.HandleFunc("/singers/{id:[0-9]+}", singerController.GetSingerDetailHandler).Methods(http.MethodGet)
 	r.HandleFunc("/singers", singerController.PostSingerHandler).Methods(http.MethodPost)
 	r.HandleFunc("/singers/{id:[0-9]+}", singerController.DeleteSingerHandler).Methods(http.MethodDelete)
+
+	r.HandleFunc("/albums", albumController.GetAlbumListHandler).Methods(http.MethodGet)
+	r.HandleFunc("/albums/{id:[0-9]+}", albumController.GetAlbumDetailHandler).Methods(http.MethodGet)
 
 	r.Use(middleware.LoggingMiddleware)
 
