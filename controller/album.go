@@ -34,9 +34,26 @@ func (c *albumController) GetAlbumListHandler(w http.ResponseWriter, r *http.Req
 		errorHandler(w, r, 500, err.Error())
 		return
 	}
+
+	var responseList []albumResponse
+
+	//albumsから情報を取得しそれを一つづつ合体して配列に格納
+	for _, v := range albums {
+		singerID := v.SingerID
+		singer, err := c.singerService.GetSingerService(r.Context(), singerID)
+		if err != nil {
+			errorHandler(w, r, 500, err.Error())
+			return
+		}
+
+		//album情報とsinger情報をmerge
+		response := albumResponse{AlbumID: int(v.ID), Title: v.Title, Singer: singer}
+		responseList = append(responseList, response)
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
-	json.NewEncoder(w).Encode(albums)
+	json.NewEncoder(w).Encode(responseList)
 }
 
 // GET /albums/{id} のハンドラー
