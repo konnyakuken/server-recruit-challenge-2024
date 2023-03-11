@@ -14,8 +14,6 @@ type albumRepository struct {
 	albumMap map[model.AlbumID]*model.Album // キーが AlbumID、値が model.Album のマップ
 }
 
-//var _ repository.AlbumRepository = (*albumRepository)(nil)
-
 func NewAlbumRepository() *albumRepository {
 	var initMap = map[model.AlbumID]*model.Album{
 		1: {ID: 1, Title: "Alice's 1st Album", SingerID: 1},

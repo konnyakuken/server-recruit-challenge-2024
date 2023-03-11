@@ -12,11 +12,19 @@ import (
 )
 
 type albumController struct {
-	service service.AlbumService
+	service       service.AlbumService
+	singerService service.SingerService
 }
 
-func NewAlbumController(s service.AlbumService) *albumController {
-	return &albumController{service: s}
+// アルバムに歌手の情報を取得API
+type albumResponse struct {
+	AlbumID int           `json:"id"`
+	Title   string        `json:"title"`
+	Singer  *model.Singer `json:"singer"`
+}
+
+func NewAlbumController(s service.AlbumService, ss service.SingerService) *albumController {
+	return &albumController{service: s, singerService: ss}
 }
 
 // GET /albums のハンドラー
@@ -45,9 +53,21 @@ func (c *albumController) GetAlbumDetailHandler(w http.ResponseWriter, r *http.R
 		errorHandler(w, r, 500, err.Error())
 		return
 	}
+
+	//アルバム情報を元にSingerIDを取得し、それを元にGetSingerServiceで情報を取得
+	singerID := album.SingerID
+	singer, err := c.singerService.GetSingerService(r.Context(), singerID)
+	if err != nil {
+		errorHandler(w, r, 500, err.Error())
+		return
+	}
+
+	//album情報とsinger情報をmerge
+	response := albumResponse{AlbumID: int(album.ID), Title: album.Title, Singer: singer}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
-	json.NewEncoder(w).Encode(album)
+	json.NewEncoder(w).Encode(response)
 }
 
 // POST /albums のハンドラー
